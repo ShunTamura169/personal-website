@@ -24,13 +24,13 @@ export default function Home() {
     // ナビゲーションリンクにイベントリスナーを追加
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     navLinks.forEach(link => {
-      link.addEventListener('click', smoothScroll);
+      (link as HTMLAnchorElement).addEventListener('click', smoothScroll);
     });
 
     // クリーンアップ関数
     return () => {
       navLinks.forEach(link => {
-        link.removeEventListener('click', smoothScroll);
+        (link as HTMLAnchorElement).removeEventListener('click', smoothScroll);
       });
     };
   }, []); // 空の依存配列で、このeffectをマウント時に一度だけ実行
