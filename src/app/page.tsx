@@ -123,7 +123,7 @@ export default function Home() {
         {/* Contact Section */}
         <section id="contact" className="bg-gray-800 text-white py-20">
           <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl font-semibold mb-8">Let's Connect</h2>
+            <h2 className="text-3xl font-semibold mb-8">Let&apos;s Connect</h2>
             <div className="flex justify-center space-x-4">
               {['GitHub', 'LinkedIn', 'Twitter'].map((platform) => (
                 <a key={platform} href="#" className="bg-white text-gray-800 rounded-full px-6 py-3 font-medium hover:bg-gray-200 transition duration-300">
