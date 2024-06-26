@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect } from 'react'
+import BlogSlider from './BlogSlider';
 
 export default function Home() {
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-gray-800">Shun Tamura</h1>
           <nav>
             <ul className="flex space-x-4">
-              {['About', 'Skills', 'Projects', 'Contact'].map((item) => (
+              {['About', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
                 <li key={item}>
                   <a href={`#${item.toLowerCase()}`} className="text-gray-600 hover:text-gray-800 transition duration-300">
                     {item}
@@ -119,6 +120,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Latest Blog Posts Section */}
+        <BlogSlider />
 
         {/* Contact Section */}
         <section id="contact" className="bg-gray-800 text-white py-20">
