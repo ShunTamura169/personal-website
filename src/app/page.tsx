@@ -7,7 +7,7 @@ import BlogSlider from './BlogSlider';
 export default function Home() {
   useEffect(() => {
     // スムーズスクロール関数
-    const smoothScroll = (e: MouseEvent) => {
+    const smoothScroll = (e: Event) => {
       e.preventDefault();
       const target = e.target as HTMLAnchorElement;
       const targetId = target.getAttribute('href');
@@ -21,20 +21,20 @@ export default function Home() {
         }
       }
     };
-
+  
     // ナビゲーションリンクにイベントリスナーを追加
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     navLinks.forEach(link => {
-      (link as HTMLAnchorElement).addEventListener('click', smoothScroll);
+      link.addEventListener('click', smoothScroll as EventListener);
     });
-
+  
     // クリーンアップ関数
     return () => {
       navLinks.forEach(link => {
-        (link as HTMLAnchorElement).removeEventListener('click', smoothScroll);
+        link.removeEventListener('click', smoothScroll as EventListener);
       });
     };
-  }, []); // 空の依存配列で、このeffectをマウント時に一度だけ実行
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
@@ -44,7 +44,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-gray-800">Shun Tamura</h1>
           <nav>
             <ul className="flex space-x-4">
-              {['About', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
+              {['About', 'Experience', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
                 <li key={item}>
                   <a href={`#${item.toLowerCase()}`} className="text-gray-600 hover:text-gray-800 transition duration-300">
                     {item}
@@ -61,7 +61,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center text-white">
           <Image
-            src="/Alps.png" // Ensure this path is correct
+            src="/Alps.png"
             alt="Hero background"
             layout="fill"
             objectFit="cover"
@@ -69,7 +69,7 @@ export default function Home() {
             className="z-0"
           />
           <div className="z-10 text-center">
-            <h2 className="text-5xl font-bold mb-4">Web Developer & Designer</h2>
+            <h2 className="text-5xl font-bold mb-4">Exploring Worlds with Intelligence</h2>
             <p className="text-xl mb-8">Creating beautiful and functional web experiences</p>
             <a href="#contact" className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition duration-300">
               Get in touch
@@ -82,19 +82,51 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-semibold mb-8 text-center">About Me</h2>
             <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto text-center">
-              私はクリエイティブで革新的なウェブソリューションの開発に情熱を注ぐウェブデベロッパーです。
-              最新のテクノロジーを活用し、ユーザー体験を向上させる美しいインターフェースの作成に取り組んでいます。
+              Hi, I am Shun Tamura, currently working as an Engineer and Researcher at SoftBank&apos;s Research Institute of Advanced Technology (RIAT).
+              I specialized in traffic engineering academically and have honed my expertise in digital twins and AI/virtualization field. I have been involved in rapid prototyping of cutting-edge technologies, including 3D map development and AI RAN projects.
+              In my private life, I have a deep interest in maps and travel, and I am always eager to explore new things. My long-term career goal is to leverage my experience in both digital twins and AI to contribute to innovations in the fields of autonomous driving and robotics.
             </p>
           </div>
         </section>
 
+        {/* Experience Section */}
+        <section id="experience" className="bg-gray-100 py-20">
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-semibold mb-8 text-center">Experience</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                { title: 'Engineer/Researcher', company: 'SoftBank', logo: '/softbank.png', date: '2022 - Present', description: 'Conducted research on digital twins and AI/virtualization technologies.' },
+                { title: 'Engineer/Researcher', company: 'MONET Technologies', logo: '/monet.jpeg', date: '2022 - 2023', description: 'Worked on innovative mobility solutions.' },
+                { title: 'Graduate School', company: 'École nationale des ponts et chaussées', logo: '/enpc.png', date: '2019-2022', description: 'Master of Science in Transportation Engineering' },
+                { title: 'Undergraduate School', company: 'Tokyo University', logo: '/tokyo-university.jpg', date: '2015-2019', description: 'Bachelor of Engineering in Civil Engineering' },
+              ].map((experience, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md p-6 flex items-start">
+                  <Image
+                    src={experience.logo}
+                    alt={`${experience.company} logo`}
+                    width={64}
+                    height={64}
+                    className="mr-4"
+                  />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">{experience.title}</h3>
+                    <p className="text-gray-600 mb-2">{experience.company}</p>
+                    <p className="text-gray-500 text-sm mb-2">{experience.date}</p>
+                    <p className="text-gray-600">{experience.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Skills Section */}
-        <section id="skills" className="bg-gray-100 py-20">
+        <section id="skills" className="bg-white py-20">
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-semibold mb-8 text-center">Skills</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-              {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'GraphQL'].map((skill) => (
-                <div key={skill} className="bg-white rounded-lg shadow-md px-4 py-3 text-center font-medium">
+              {['Python', 'TypeScript', 'Docker', 'Kubernetes', 'Machine Learning', 'Digital Twin'].map((skill) => (
+                <div key={skill} className="bg-gray-100 rounded-lg shadow-md px-4 py-3 text-center font-medium">
                   {skill}
                 </div>
               ))}
@@ -103,7 +135,7 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="bg-white py-20">
+        <section id="projects" className="bg-gray-100 py-20">
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-semibold mb-8 text-center">Featured Projects</h2>
             <div className="grid md:grid-cols-2 gap-8">
@@ -111,7 +143,7 @@ export default function Home() {
                 { title: 'Project Alpha', description: 'A cutting-edge web application built with Next.js and GraphQL.' },
                 { title: 'Project Beta', description: 'An innovative mobile app developed using React Native and Firebase.' },
               ].map((project, index) => (
-                <div key={index} className="bg-gray-100 rounded-lg shadow-md p-6">
+                <div key={index} className="bg-white rounded-lg shadow-md p-6">
                   <h3 className="text-xl font-semibold mb-4">{project.title}</h3>
                   <p className="text-gray-600 mb-4">{project.description}</p>
                   <a href="#" className="text-blue-500 hover:underline">Learn more</a>
@@ -122,7 +154,9 @@ export default function Home() {
         </section>
 
         {/* Latest Blog Posts Section */}
-        <BlogSlider />
+        <section id="blog" className="bg-white py-20">
+          <BlogSlider />
+        </section>
 
         {/* Contact Section */}
         <section id="contact" className="bg-gray-800 text-white py-20">
@@ -145,5 +179,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
