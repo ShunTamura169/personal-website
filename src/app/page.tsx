@@ -1,39 +1,46 @@
 "use client";
 
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import BlogSlider from './BlogSlider';
+
+const socialLinks = [
+  { name: 'GitHub', url: 'https://github.com/ShunTamura169' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/shun-tamura/' },
+  { name: 'Twitter', url: 'https://twitter.com' }
+]
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    // スムーズスクロール関数
-    const smoothScroll = (e: Event) => {
-      e.preventDefault();
-      const target = e.target as HTMLAnchorElement;
-      const targetId = target.getAttribute('href');
-      if (targetId && targetId.startsWith('#')) {
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+  // スムーズスクロール関数
+  const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = e.currentTarget;
+    const targetId = target.getAttribute('href');
+    if (targetId && targetId.startsWith('#')) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
       }
-    };
-  
+    }
+  };
+
+  useEffect(() => {
     // ナビゲーションリンクにイベントリスナーを追加
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     navLinks.forEach(link => {
-      link.addEventListener('click', smoothScroll as EventListener);
+      link.addEventListener('click', smoothScroll as unknown as EventListener);
     });
   
     // クリーンアップ関数
     return () => {
       navLinks.forEach(link => {
-        link.removeEventListener('click', smoothScroll as EventListener);
+        link.removeEventListener('click', smoothScroll as unknown as EventListener);
       });
     };
   }, []);
@@ -59,7 +66,7 @@ export default function Home() {
                 <li key={item} className="py-2 md:py-0">
                   <a
                     href={`#${item.toLowerCase()}`}
-                    className="text-gray-600 hover:text-gray-800 transition duration-300 block md:inline"
+                    className="text-gray-600 hover:text-blue-500 transition duration-300 block md:inline"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item}
@@ -74,22 +81,33 @@ export default function Home() {
       {/* Main Content */}
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="relative h-screen flex items-center justify-center text-white">
+        <section className="relative h-screen flex items-center justify-center text-white bg-gray-900">
           <Image
             src="/Alps.png"
             alt="Hero background"
             layout="fill"
             objectFit="cover"
             quality={100}
-            className="z-0"
+            className="z-0 opacity-50"
           />
-          <div className="z-10 text-center">
-            <h2 className="text-5xl font-bold mb-4">Exploring Worlds with Intelligence</h2>
-            <p className="text-xl mb-8">Creating beautiful and functional web experiences</p>
-            <a href="#contact" className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition duration-300">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="z-10 text-center p-8 rounded-lg"
+          >
+            <h2 className="text-6xl font-bold mb-4 font-orbitron">Exploring Worlds <br/>with Intelligence</h2>
+            <p className="text-xl mb-8 font-roboto">Creating beautiful and functional web experiences</p>
+            <motion.a 
+              href="#contact" 
+              className="bg-blue-500 text-gray-100 px-8 py-4 rounded-full font-semibold hover:bg-cyan-300 transition duration-300 inline-block"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={smoothScroll}
+            >
               Get in touch
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </section>
 
         {/* About Section */}
@@ -177,74 +195,94 @@ export default function Home() {
 
 
         {/* Contact Section */}
-        <section id="contact" className="bg-gray-800 text-white py-20">
+        <section id="contact" className="bg-gray-900 text-white py-20">
           <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-semibold mb-8 text-center">Let&apos;s Connect</h2>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-5xl font-orbitron font-semibold mb-12 text-center"
+            >
+              Let&apos;s Connect
+            </motion.h2>
             
-            {/* Social Media Links */}
-            <div className="flex justify-center space-x-4 mb-12">
-              {['GitHub', 'LinkedIn', 'Twitter'].map((platform) => (
-                <a key={platform} href="#" className="bg-white text-gray-800 rounded-full px-6 py-3 font-medium hover:bg-gray-200 transition duration-300">
-                  {platform}
-                </a>
+            <div className="flex justify-center space-x-6 mb-12">
+              {socialLinks.map((platform) => (
+                <motion.a 
+                  key={platform.name} 
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-500 rounded-full px-6 py-3 font-medium hover:bg-cyan-300 hover:text-white transition duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {platform.name}
+                </motion.a>
               ))}
             </div>
 
-            {/* Contact Form */}
-            <div className="max-w-2xl mx-auto">
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="max-w-2xl mx-auto"
+            >
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="organization" className="block mb-1">Organization</label>
+                    <label htmlFor="organization" className="block mb-2 text-sm font-medium">Organization</label>
                     <input
                       type="text"
                       id="organization"
                       name="organization"
-                      className="w-full px-4 py-2 rounded bg-gray-700 text-white"
+                      className="w-full px-4 py-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="name" className="block mb-1">Name</label>
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium">Name</label>
                     <input
                       type="text"
                       id="name"
                       name="name"
-                      className="w-full px-4 py-2 rounded bg-gray-700 text-white"
+                      className="w-full px-4 py-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
                       required
                     />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="email" className="block mb-1">Email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium">Email</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
-                    className="w-full px-4 py-2 rounded bg-gray-700 text-white"
+                    className="w-full px-4 py-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block mb-1">Message</label>
+                  <label htmlFor="message" className="block mb-2 text-sm font-medium">Message</label>
                   <textarea
                     id="message"
                     name="message"
                     rows={4}
-                    className="w-full px-4 py-2 rounded bg-gray-700 text-white"
+                    className="w-full px-4 py-3 rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-400 focus:outline-none"
                     required
                   ></textarea>
                 </div>
                 <div className="text-center">
-                  <button
+                  <motion.button
                     type="submit"
-                    className="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition duration-300"
+                    className="bg-blue-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-cyan-300 transition duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     Send Message
-                  </button>
+                  </motion.button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         </section>
       </main>
