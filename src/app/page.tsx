@@ -12,8 +12,16 @@ const socialLinks = [
   { name: 'Twitter', url: 'https://twitter.com' }
 ]
 
+const heroImages = [
+  '/Alps.png',
+  '/Bathy_reef.png',
+  '/Bathy_river.png',
+  '/Bathy_trench.png',
+];
+
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // スムーズスクロール関数
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -46,6 +54,16 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // 5秒ごとに画像を変更
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <Head>
@@ -57,7 +75,7 @@ export default function Home() {
         <link rel="canonical" href="https://www.shun-tamura.com" />
       </Head>
       <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
-        <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-10">
+        <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
           <div className="py-4 px-4 sm:px-6 flex justify-between items-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 bg-transparent">
               Shun Tamura
@@ -91,15 +109,21 @@ export default function Home() {
         {/* Main Content */}
         <main className="pt-16">
           {/* Hero Section */}
-          <section className="relative h-screen flex items-center justify-center text-white bg-gray-900">
-            <Image
-              src="/Alps.png"
-              alt="Hero background"
-              layout="fill"
-              objectFit="cover"
-              quality={100}
-              className="z-0 opacity-50"
-            />
+          <section className="relative h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden">
+            {heroImages.map((src, index) => (
+              <Image
+                key={src}
+                src={src}
+                alt={`Hero background ${index + 1}`}
+                layout="fill"
+                objectFit="cover"
+                quality={100}
+                priority={index === 0}
+                className={`z-0 opacity-50 transition-opacity duration-1000 ${
+                  index === currentImageIndex ? 'opacity-50' : 'opacity-0'
+                }`}
+              />
+            ))}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -110,7 +134,7 @@ export default function Home() {
               <p className="text-xl mb-8 font-roboto">Creating beautiful and functional web experiences</p>
               <motion.a 
                 href="#contact" 
-                className="bg-blue-500 text-gray-100 px-8 py-4 rounded-full font-semibold hover:bg-cyan-300 transition duration-300 inline-block"
+                className="bg-blue-500 text-gray-100 px-8 py-4 rounded-full font-semibold hover:bg-cyan-300 transition duration-300 inline-block z-20 relative"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={smoothScroll}
