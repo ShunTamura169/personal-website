@@ -2,7 +2,7 @@
 
 import Head from 'next/head'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import BlogSlider from './BlogSlider';
 
@@ -110,20 +110,26 @@ export default function Home() {
         <main className="pt-16">
           {/* Hero Section */}
           <section className="relative h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden">
-            {heroImages.map((src, index) => (
-              <Image
-                key={src}
-                src={src}
-                alt={`Hero background ${index + 1}`}
-                layout="fill"
-                objectFit="cover"
-                quality={100}
-                priority={index === 0}
-                className={`z-0 opacity-50 transition-opacity duration-1000 ${
-                  index === currentImageIndex ? 'opacity-50' : 'opacity-0'
-                }`}
-              />
-            ))}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentImageIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 z-0"
+              >
+                <Image
+                  src={heroImages[currentImageIndex]}
+                  alt={`Hero background ${currentImageIndex + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                  quality={100}
+                  priority
+                  className="opacity-50"
+                />
+              </motion.div>
+            </AnimatePresence>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
