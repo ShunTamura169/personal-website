@@ -22,6 +22,7 @@ const heroImages = [
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [language, setLanguage] = useState<'en' | 'ja'>('en');
 
   // スムーズスクロール関数
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -37,6 +38,10 @@ export default function Home() {
         });
       }
     }
+  };
+
+  const toggleLanguage = (lang: 'en' | 'ja') => {
+    setLanguage(lang);
   };
 
   useEffect(() => {
@@ -73,36 +78,60 @@ export default function Home() {
         <meta name="author" content="Shun Tamura" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://www.shun-tamura.com" />
-      </Head>
+        </Head>
       <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
         <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
           <div className="py-4 px-4 sm:px-6 flex justify-between items-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 bg-transparent">
               Shun Tamura
             </h1>
-            <button
-              className="md:hidden text-gray-600 focus:outline-none"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            </button>
-            <nav className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:block absolute md:relative top-full left-0 right-0 bg-white md:bg-transparent shadow-md md:shadow-none`}>
-              <ul className="flex flex-col md:flex-row md:space-x-4 p-4 md:p-0">
-                {['About', 'Experience', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
-                  <li key={item} className="py-2 md:py-0">
-                    <a
-                      href={`#${item.toLowerCase()}`}
-                      className="text-gray-600 hover:text-blue-500 transition duration-300 block md:inline"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <div className="flex items-center space-x-4">
+              <button
+                className="md:hidden text-gray-600 focus:outline-none"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
+              <nav className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:block absolute md:static top-full left-0 right-0 bg-white md:bg-transparent shadow-md md:shadow-none`}>
+                <ul className="flex flex-col md:flex-row md:space-x-4 p-4 md:p-0">
+                  {['About', 'Experience', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
+                    <li key={item} className="py-2 md:py-0">
+                      <a
+                        href={`#${item.toLowerCase()}`}
+                        className="text-gray-600 hover:text-blue-500 transition duration-300 block md:inline"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {language === 'en' ? item : {
+                          'About': '概要',
+                          'Experience': '経歴',
+                          'Skills': 'スキル',
+                          'Projects': 'プロジェクト',
+                          'Blog': 'ブログ',
+                          'Contact': '連絡先'
+                        }[item]}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <div className="text-sm">
+                <button
+                  onClick={() => toggleLanguage('en')}
+                  className={`mr-2 ${language === 'ja' ? 'underline' : ''} text-gray-600 hover:text-blue-500 transition duration-300`}
+                >
+                  EN
+                </button>
+                /
+                <button
+                  onClick={() => toggleLanguage('ja')}
+                  className={`ml-2 ${language === 'en' ? 'underline' : ''} text-gray-600 hover:text-blue-500 transition duration-300`}
+                >
+                  JP
+                </button>
+              </div>
+            </div>
           </div>
         </header>
 
