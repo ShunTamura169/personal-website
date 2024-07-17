@@ -13,10 +13,10 @@ const socialLinks = [
 ]
 
 const heroImages = [
-  '/Alps.png',
-  '/Bathy_reef.png',
-  '/Bathy_river.png',
-  '/Bathy_trench.png',
+  { src: '/Alps.png', alt: 'Alps mountain range' },
+  { src: '/Bathy_reef.png', alt: 'Underwater reef' },
+  { src: '/Bathy_river.png', alt: 'River landscape' },
+  { src: '/Bathy_trench.png', alt: 'Ocean trench' },
 ];
 
 export default function Home() {
@@ -149,11 +149,11 @@ export default function Home() {
                 className="absolute inset-0 z-0"
               >
                 <Image
-                  src={heroImages[currentImageIndex]}
-                  alt={`Hero background ${currentImageIndex + 1}`}
+                  src={heroImages[currentImageIndex].src}
+                  alt={heroImages[currentImageIndex].alt}
                   layout="fill"
                   objectFit="cover"
-                  quality={100}
+                  quality={85}
                   priority
                   className="opacity-50"
                 />
