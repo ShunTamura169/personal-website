@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import BlogSlider from './BlogSlider';
+import ProjectsSection from './ProjectsSection';
 
 const socialLinks = [
   { name: 'GitHub', url: 'https://github.com/ShunTamura169' },
@@ -239,23 +240,7 @@ export default function Home() {
           </section>
 
           {/* Projects Section */}
-          <section id="projects" className="bg-gray-100 py-20">
-            <div className="container mx-auto px-6">
-              <h2 className="text-3xl font-semibold mb-8 text-center">Featured Projects</h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                {[
-                  { title: 'Project Alpha', description: 'A cutting-edge web application built with Next.js and GraphQL.' },
-                  { title: 'Project Beta', description: 'An innovative mobile app developed using React Native and Firebase.' },
-                ].map((project, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-xl font-semibold mb-4">{project.title}</h3>
-                    <p className="text-gray-600 mb-4">{project.description}</p>
-                    <a href="#" className="text-blue-500 hover:underline">Learn more</a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+          <ProjectsSection />
 
           {/* Latest Blog Posts Section */}
           <section id="blog" className="bg-white py-20">
