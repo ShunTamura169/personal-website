@@ -8,7 +8,6 @@ This repository contains the source code for my personal portfolio website. You 
 - React
 - TypeScript
 - Tailwind CSS
-- Framer Motion
 
 ## Features
 
