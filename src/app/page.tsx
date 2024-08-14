@@ -5,28 +5,15 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import BlogSlider from './BlogSlider';
+import HeroSection from './HeroSection';
 import AboutSection from './AboutSection';
 import ExperienceSection from './ExperienceSection';
 import SkillsSection from './SkillsSection';
 import ProjectsSection from './ProjectsSection';
 import ContactSection from './ContactSection';
 
-const socialLinks = [
-  { name: 'GitHub', url: 'https://github.com/ShunTamura169' },
-  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/shun-tamura/' },
-  { name: 'Twitter', url: 'https://twitter.com' }
-]
-
-const heroImages = [
-  { src: '/Alps.png', alt: 'Alps mountain range' },
-  { src: '/Bathy_reef.png', alt: 'Underwater reef' },
-  { src: '/Bathy_river.png', alt: 'River landscape' },
-  { src: '/Bathy_trench.png', alt: 'Ocean trench' },
-];
-
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [language, setLanguage] = useState<'en' | 'ja'>('en');
 
   // スムーズスクロール関数
@@ -62,16 +49,6 @@ export default function Home() {
         link.removeEventListener('click', smoothScroll as unknown as EventListener);
       });
     };
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // 5秒ごとに画像を変更
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -143,46 +120,7 @@ export default function Home() {
         {/* Main Content */}
         <main className="pt-16">
           {/* Hero Section */}
-          <section className="relative h-screen flex items-center justify-center text-white bg-gray-900 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentImageIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="absolute inset-0 z-0"
-              >
-                <Image
-                  src={heroImages[currentImageIndex].src}
-                  alt={heroImages[currentImageIndex].alt}
-                  layout="fill"
-                  objectFit="cover"
-                  quality={85}
-                  priority
-                  className="opacity-50"
-                />
-              </motion.div>
-            </AnimatePresence>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="z-10 text-center p-8 rounded-lg"
-            >
-              <h2 className="text-6xl font-bold mb-4 font-orbitron">Exploring Worlds <br/>with Intelligence</h2>
-              <p className="text-xl mb-8 font-roboto">Creating beautiful and functional web experiences</p>
-              <motion.a 
-                href="#contact" 
-                className="bg-blue-500 text-gray-100 px-8 py-4 rounded-full font-semibold hover:bg-cyan-300 transition duration-300 inline-block z-20 relative"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={smoothScroll}
-              >
-                Get in touch
-              </motion.a>
-            </motion.div>
-          </section>
+          <HeroSection language={language} />
 
           {/* About Section */}
           <AboutSection />
