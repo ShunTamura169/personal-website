@@ -16,7 +16,6 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'en' | 'ja'>('en');
 
-  // スムーズスクロール関数
   const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const target = e.currentTarget;
@@ -37,19 +36,38 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // ナビゲーションリンクにイベントリスナーを追加
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
     navLinks.forEach(link => {
       link.addEventListener('click', smoothScroll as unknown as EventListener);
     });
   
-    // クリーンアップ関数
     return () => {
       navLinks.forEach(link => {
         link.removeEventListener('click', smoothScroll as unknown as EventListener);
       });
     };
   }, []);
+
+  const renderNavItems = () => (
+    ['About', 'Experience', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
+      <li key={item} className="py-2 md:py-0">
+        <a
+          href={`#${item.toLowerCase()}`}
+          className="text-gray-600 hover:text-blue-500 transition duration-300 block md:inline"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {language === 'en' ? item : {
+            'About': '概要',
+            'Experience': '経歴',
+            'Skills': 'スキル',
+            'Projects': 'プロジェクト',
+            'Blog': 'ブログ',
+            'Contact': '連絡先'
+          }[item]}
+        </a>
+      </li>
+    ))
+  );
 
   return (
     <>
@@ -60,7 +78,7 @@ export default function Home() {
         <meta name="author" content="Shun Tamura" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://www.shun-tamura.com" />
-        </Head>
+      </Head>
       <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
         <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
           <div className="py-4 px-4 sm:px-6 flex justify-between items-center">
@@ -78,24 +96,7 @@ export default function Home() {
               </button>
               <nav className={`${isMobileMenuOpen ? 'block' : 'hidden'} md:block absolute md:static top-full left-0 right-0 bg-white md:bg-transparent shadow-md md:shadow-none`}>
                 <ul className="flex flex-col md:flex-row md:space-x-4 p-4 md:p-0">
-                  {['About', 'Experience', 'Skills', 'Projects', 'Blog', 'Contact'].map((item) => (
-                    <li key={item} className="py-2 md:py-0">
-                      <a
-                        href={`#${item.toLowerCase()}`}
-                        className="text-gray-600 hover:text-blue-500 transition duration-300 block md:inline"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {language === 'en' ? item : {
-                          'About': '概要',
-                          'Experience': '経歴',
-                          'Skills': 'スキル',
-                          'Projects': 'プロジェクト',
-                          'Blog': 'ブログ',
-                          'Contact': '連絡先'
-                        }[item]}
-                      </a>
-                    </li>
-                  ))}
+                  {renderNavItems()}
                 </ul>
               </nav>
               <div className="text-sm">
@@ -117,30 +118,15 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Main Content */}
         <main className="pt-16">
-          {/* Hero Section */}
           <HeroSection language={language} />
-
-          {/* About Section */}
           <AboutSection />
-
-          {/* Experience Section */}
           <ExperienceSection />
-
-          {/* Skills Section */}
           <SkillsSection />
-
-          {/* Projects Section */}
           <ProjectsSection />
-
-          {/* Latest Blog Posts Section */}
           <section id="blog" className="bg-white py-20">
             <BlogSlider />
           </section>
-
-
-          {/* Contact Section */}
           <ContactSection />
         </main>
 
